@@ -13,11 +13,12 @@ export interface HomeService {
 }
 
 export interface Category {
+    id: number,
     name: string,
     slug: string,
     photo: string,
     photo_white: string,
-    homeServices_count: number, //untuk limit
+    home_services_count: number, //untuk limit
     homeServices: HomeService[], //type relasi
     popular_services: HomeService[], //untuk is_popular
 }
