@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import HomePage from './components/HomePage'
-import CategoryPage from './components/CategoryPage'
-import DetailsPage from './components/DetailsPage'
-import BookingPage from './components/BookingPage'
-import MyBookingPage from './components/MyBookingPage'
-import MyCartPage from './components/MyCartPage'
-import PaymentPage from './components/PaymentPage'
-import SuccessBookingPage from './components/SuccessBookingPage'
+import HomePage from './pages/HomePage'
+import CategoryPage from './pages/CategoryPage'
+import DetailsPage from './pages/DetailsPage'
+import BookingPage from './pages/BookingPage'
+import MyBookingPage from './pages/MyBookingPage'
+import MyCartPage from './pages/MyCartPage'
+import PaymentPage from './pages/PaymentPage'
+import SuccessBookingPage from './pages/SuccessBookingPage'
 
 function App() {
   return (
