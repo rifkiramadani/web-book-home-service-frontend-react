@@ -116,7 +116,7 @@ const CategoryPage = () => {
                 </header>
                 <section id="mostOrdered" className="relative space-y-[14px]">
                     <h3 className="pl-5 text-[18px] font-bold leading-[27px] text-white">
-                        Most Ordered
+                        Most Ordered Services
                     </h3>
                     <div id="MostOrderedSlider" className="swiper w-full overflow-x-hidden p-3">
                         <Swiper
@@ -127,8 +127,8 @@ const CategoryPage = () => {
                             slidesOffsetBefore={20}
                             direction="horizontal"
                         >
-                            {category.home_services.length > 0
-                                ? category.home_services.map((homeService) => (
+                            {category.popular_home_services.length > 0
+                                ? category.popular_home_services.map((homeService) => (
                                     <SwiperSlide key={homeService.id} className="swiper-slide !w-fit">
                                         <Link to={`/homeService/${homeService.slug}`} className="card">
                                             <div className="relative flex w-[230px] shrink-0 flex-col gap-[12px] overflow-hidden rounded-[24px] border border-shujia-graylight bg-white p-4 transition-all duration-300 hover:border-shujia-orange">
@@ -181,7 +181,7 @@ const CategoryPage = () => {
                                             </div>
                                         </Link>
                                     </SwiperSlide>
-                                )) : 'Belum Ada Data Home Service'}
+                                )) : 'Belum Ada Data Popular Home Service'}
 
                         </Swiper>
                     </div>

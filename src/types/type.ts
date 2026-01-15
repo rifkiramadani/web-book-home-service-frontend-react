@@ -18,9 +18,9 @@ export interface Category {
     slug: string,
     photo: string,
     photo_white: string,
-    home_services_count: number, //untuk limit
+    home_services_count: number, //untuk menghitung jumlah home services
     home_services: HomeService[], //type relasi
-    popular_services: HomeService[], //untuk is_popular
+    popular_home_services: HomeService[], //untuk is_popular
 }
 
 interface ServiceBenefit {
