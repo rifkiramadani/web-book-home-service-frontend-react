@@ -13,6 +13,8 @@ const CategoryPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
     useEffect(() => {
         apiClient
             .get(`/category/${slug}`)
@@ -24,6 +26,18 @@ const CategoryPage = () => {
                 setError(error);
                 setLoading(false);
             })
+
+        //handle untuk menangkap value scroll
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 0)
+        }
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+
+
     }, [slug]);
 
     // FORMAT RUPIAH
@@ -61,17 +75,23 @@ const CategoryPage = () => {
                 </div>
                 <section
                     id="NavTop"
-                    className="fixed left-0 right-0 top-[16px] z-30 transition-all duration-300"
+                    className={` 
+                            ${isScrolled ? 'fixed left-0 right-0 top-[30px] z-30 transition-all duration-300' : 'fixed left-0 right-0 top-[16px] z-30 transition-all duration-300 '}
+                        `}
                 >
                     <div className="relative mx-auto max-w-[640px] px-5">
                         <div
                             id="ContainerNav"
-                            className="flex items-center justify-between py-[14px] transition-all duration-300"
+                            className={`flex items-center justify-between py-[14px] transition-all duration-300 
+                                    ${isScrolled ? 'bg-white rounded-[22px] px-[16px] shadow-[0px_12px_20px_0px_#0305041C]' : ''}
+                                `}
                         >
                             <Link to={'/'}>
                                 <div
                                     id="Back"
-                                    className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white"
+                                    className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white 
+                                            ${isScrolled ? 'border border-shujia-graylight' : ''}
+                                        `}
                                 >
                                     <img
                                         src="/assets/images/icons/back.svg"
@@ -82,14 +102,18 @@ const CategoryPage = () => {
                             </Link>
                             <h2
                                 id="Title"
-                                className="font-semibold text-white transition-all duration-300"
+                                className={`
+                                        ${isScrolled ? 'font-semibold transition-all duration-300' : 'font-semibold text-white transition-all duration-300'}
+                                    `}
                             >
                                 Explore
                             </h2>
                             <Link to={'/myCart'}>
                                 <div
                                     id="Cart"
-                                    className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white"
+                                    className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white 
+                                            ${isScrolled ? 'border border-shujia-graylight' : ''}
+                                        `}
                                 >
                                     <img
                                         src="/assets/images/icons/cart.svg"
@@ -232,7 +256,6 @@ const CategoryPage = () => {
                                         </Link>
                                     </SwiperSlide>
                                 )) : 'Belum Ada Data Home Service'}
-
                         </Swiper>
 
                     </div>
