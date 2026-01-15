@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import type { HomeService } from "../types/type"
+import type { CartItem, HomeService } from "../types/type"
 import { useParams } from "react-router-dom";
 import apiClient from "../services/apiServices";
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,6 +12,18 @@ const DetailsPage = () => {
     const [service, setService] = useState<HomeService | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    //use state untuk menyimpan data cart atau data keranjang
+    const [cart, setCart] = useState<CartItem[]>([]);
+    const [isAdding, setIsAdding] = useState(false); //use state untuk loading saat menambahkan keranjang
+
+    //use effect ambil item cart dari localstorage (jalankan useEffect ketika cart di ambil dari localstorage)
+    useEffect(() => {
+        const savedCart = localStorage.getItem("cart");
+        if (savedCart) {
+            setCart(JSON.parse(savedCart)); //isi set cart dengan variabel savedCart yang telah di parse manjadi JSON
+        }
+    }, []);
 
     //use effect untuk fetch details data berdasarkan slug yang di ambil dari params
     useEffect(() => {
@@ -34,6 +46,45 @@ const DetailsPage = () => {
             currency: "IDR",
             maximumFractionDigits: 0,
         }).format(value);
+    }
+
+    //fungsi untuk menghandle ketika tombol add to cart di tekan
+    const handleAddToCart = () => {
+        //jika service yang di pilih ada
+        if (service) {
+            //maka set loading adding menjadi true
+            setIsAdding(true);
+            //dan cek untuk item yang sudah ada dicart tidak bisa di pilih lagi (item yang di cart sama dengan service yang dipilih)
+            const itemExists = cart.find((item) => item.home_service_id === service.id);
+            //jika item nya sudah ada di cart
+            if (itemExists) {
+                //maka munculkan alert 
+                alert("Jasa Sudah tersedia di cart");
+                //dan set loading adding menjadi false
+                setIsAdding(false);
+                //jika item nya belum ada di cart
+            } else {
+                //maka buat variable untuk mengisi item pada cart berdasarkan type yang telah di buat
+                const newCartItem: CartItem = {
+                    home_service_id: service.id,
+                    slug: service.slug,
+                    quantity: 1,
+                }
+
+                // setelah itu buat variable updatedCart yang berisikan spread operator (item cart yang lama tambahkan item cart yang baru dengan variable newCartItem diatas)
+                const updatedCart = [...cart, newCartItem];
+                //setelah itu isi setCart dengan variable updatedCart tersebut
+                setCart(updatedCart);
+
+                //setelah itu simpan item cart tadi ke local storage dan format menjadi string
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+                //tampilkan alert
+                alert("Jasa Berhasil ditambahkan ke cart");
+                // dan set loading adding menjadi false
+                setIsAdding(false);
+            }
+        }
     }
 
 
@@ -295,11 +346,12 @@ const DetailsPage = () => {
                                 </strong>
                                 <p className="text-sm leading-[21px] text-white">Refund Guarantee</p>
                             </div>
-                            <a href="my-cart.html" className="w-full">
+                            {/* ketika di klik jalankan function handleAddToCart dan disabled ketika isAdding menjadi true */}
+                            <button onClick={handleAddToCart} disabled={isAdding} className="w-full">
                                 <p className="w-full rounded-full bg-shujia-orange px-[18px] py-[14px] text-center font-semibold text-white transition-all duration-300 hover:shadow-[0px_4px_10px_0px_#D04B1E80]">
-                                    Add to Cart
+                                    {isAdding ? "Adding..." : 'Add To Cart'}
                                 </p>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </nav>
