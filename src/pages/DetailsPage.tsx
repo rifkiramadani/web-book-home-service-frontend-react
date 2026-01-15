@@ -17,11 +17,24 @@ const DetailsPage = () => {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [isAdding, setIsAdding] = useState(false); //use state untuk loading saat menambahkan keranjang
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
     //use effect ambil item cart dari localstorage (jalankan useEffect ketika cart di ambil dari localstorage)
     useEffect(() => {
         const savedCart = localStorage.getItem("cart");
         if (savedCart) {
             setCart(JSON.parse(savedCart)); //isi set cart dengan variabel savedCart yang telah di parse manjadi JSON
+        }
+
+        //use effect untuk handle scroll
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 0);
+        }
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
         }
     }, []);
 
@@ -113,17 +126,23 @@ const DetailsPage = () => {
                 </div>
                 <section
                     id="NavTop"
-                    className="fixed left-0 right-0 top-[16px] z-30 transition-all duration-300"
+                    className={`fixed left-0 right-0 top-[16px] z-30 transition-all duration-300
+                            ${isScrolled ? 'fixed left-0 right-0 top-[30px] z-30 transition-all duration-300' : ''}
+                        `}
                 >
                     <div className="relative mx-auto max-w-[640px] px-5">
                         <div
                             id="ContainerNav"
-                            className="flex items-center justify-between py-[14px] transition-all duration-300"
+                            className={`flex items-center justify-between py-[14px] transition-all duration-300
+                                ${isScrolled ? 'bg-white rounded-[22px] px-[16px] shadow-[0px_12px_20px_0px_#0305041C]' : ''}
+                            `}
                         >
                             <a href="category.html">
                                 <div
                                     id="Back"
-                                    className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white"
+                                    className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white
+                                            ${isScrolled ? 'flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white border border-shujia-graylight' : ''}
+                                        `}
                                 >
                                     <img
                                         src="/assets/images/icons/back.svg"
@@ -134,14 +153,18 @@ const DetailsPage = () => {
                             </a>
                             <h2
                                 id="Title"
-                                className="font-semibold text-white transition-all duration-300"
+                                className={`
+                                        ${isScrolled ? 'font-semibold transition-all duration-300' : 'font-semibold transition-all text-white duration-300 '}
+                                    `}
                             >
                                 Details
                             </h2>
                             <a href="#">
                                 <div
                                     id="Cart"
-                                    className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white"
+                                    className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white
+                                            ${isScrolled ? 'flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full bg-white border border-shujia-graylight' : ''}
+                                        `}
                                 >
                                     <img
                                         src="/assets/images/icons/cart.svg"
