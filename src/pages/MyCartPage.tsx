@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import type { CartItem, HomeService } from "../types/type"
 import apiClient from "../services/apiServices";
 import { Link } from "react-router-dom";
+import AccordionSection from "../components/AccordionSection";
 
 
 const MyCartPage = () => {
@@ -147,20 +148,11 @@ const MyCartPage = () => {
                     </div>
                 </section>
                 <div className="relative flex flex-col gap-[20px] px-5 pt-[100px]">
-                    <section
-                        id="HomeServices"
-                        className="flex flex-col gap-4 rounded-3xl border border-shujia-graylight bg-white px-[14px] py-[14px]"
+                    <AccordionSection
+                        title="Home Services"
+                        iconSrc="/assets/images/icons/bottom-booking-form.svg"
+
                     >
-                        <div className="flex items-center justify-between">
-                            <h2 className="font-semibold">Home Services</h2>
-                            <button type="button" data-expand="HomeServicesJ">
-                                <img
-                                    src="/assets/images/icons/bottom-booking-form.svg"
-                                    alt="icon"
-                                    className="h-[32px] w-[32px] shrink-0 transition-all duration-300"
-                                />
-                            </button>
-                        </div>
                         <div className="flex flex-col gap-4" id="HomeServicesJ">
                             {serviceDetails.length > 0
                                 ? serviceDetails.map((serviceDetail, index) => (
@@ -217,21 +209,11 @@ const MyCartPage = () => {
                                     </>
                                 )) : "Belum Ada Data Cart"}
                         </div>
-                    </section>
-                    <section
-                        id="BookingDetails"
-                        className="flex flex-col gap-4 rounded-3xl border border-shujia-graylight bg-white px-[14px] py-[14px]"
+                    </AccordionSection>
+                    <AccordionSection
+                        title="Booking Details"
+                        iconSrc="/assets/images/icons/bottom-booking-form.svg"
                     >
-                        <div className="flex items-center justify-between">
-                            <h2 className="font-semibold">Booking Details</h2>
-                            <button type="button" data-expand="BookingDetailsJ">
-                                <img
-                                    src="/assets/images/icons/bottom-booking-form.svg"
-                                    alt="icon"
-                                    className="h-[32px] w-[32px] shrink-0 transition-all duration-300"
-                                />
-                            </button>
-                        </div>
                         <div className="flex flex-col gap-4" id="BookingDetailsJ">
                             <div className="flex justify-between">
                                 <div className="flex items-center gap-[10px]">
@@ -281,7 +263,7 @@ const MyCartPage = () => {
                                 <strong className="font-semibold">Free for All</strong>
                             </div>
                         </div>
-                    </section>
+                    </AccordionSection>
                     <section id="Adverticement">
                         <a href="#">
                             <img src="/assets/images/backgrounds/adverticement.png" alt="icon" />
