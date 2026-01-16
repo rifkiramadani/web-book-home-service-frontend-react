@@ -66,7 +66,7 @@ interface TransactionDetail {
 
 //interface untuk keranjang
 export interface CartItem {
-    home_service_id: number,
+    home_service_id: [],
     slug: string,
     quantity: number,
 }
