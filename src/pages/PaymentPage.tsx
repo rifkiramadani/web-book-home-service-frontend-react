@@ -4,6 +4,7 @@ import type { BookingFormData, CartItem, HomeService } from '../types/type';
 import type z from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import apiClient from '../services/apiServices';
+import { paymentSchema } from '../types/validationBooking';
 
 type FormData = {
     proof: File | null;
@@ -84,7 +85,82 @@ const PaymentPage = () => {
         }));
     }
 
+    // HANDLE SUBMIT FORM PAYMENT
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
+        //validasi zod
+        const validation = paymentSchema.safeParse(formData);
+
+        //jika validasi tidak success atau error
+        if (!validation.success) {
+            setFormErrors(validation.error.issues);
+            return;
+        }
+
+        //kalau berhasil kosongkan form errors nya
+        setFormErrors([]);
+
+        const submissionData = new FormData();
+
+        if (formData.proof) {
+            submissionData.append("proof", formData.proof);
+        }
+
+        if (bookingData) {
+            submissionData.append("name", bookingData.name);
+            submissionData.append("email", bookingData.email);
+            submissionData.append("phone", bookingData.phone);
+            submissionData.append("address", bookingData.address);
+            submissionData.append("city", bookingData.city);
+            submissionData.append("post_code", bookingData.post_code);
+            submissionData.append("started_time", bookingData.started_time);
+            submissionData.append("schedule_at", bookingData.schedule_at);
+        }
+
+        formData.home_service_ids.forEach((id, index) => {
+            submissionData.append(`home_service_ids[${index}]`, String(id));
+        });
+
+        try {
+            setLoading(true);
+            const response = await apiClient.post(
+                "booking-transaction",
+                submissionData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+            );
+            if (response.status === 200 || response.status === 201) {
+                console.log("Transaction response data:", response.data.data);
+                const bookingTrxId = response.data.data.booking_trx_id;
+
+                if (!bookingTrxId) {
+                    console.error("Error: booking_trx_id is undifined");
+                }
+                setSuccessMessage("Payment proof uploaded successfully!");
+
+                localStorage.removeItem("cart");
+                localStorage.removeItem("bookingData");
+
+                setFormData({ proof: null, home_service_ids: [] });
+
+                setLoading(false);
+
+                navigate(`/successBooking?${bookingTrxId}`);
+            } else {
+                console.error("Unexpected response status:", response.status);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error("Error submitting payment proof:", error);
+            setLoading(false);
+            setFormErrors([]);
+        }
+    }
+
+    // FUNGSI UNTUK ANIMASI SCROLL HEADER
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
