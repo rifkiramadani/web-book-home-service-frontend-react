@@ -76,6 +76,8 @@ const PaymentPage = () => {
         fetchServiceDetails(cartItems);
     }, [navigate]);
 
+    const [fileName, setFileName] = useState<string | null>(null);
+
     //HANDLE FILE INPUT PROOF CHANGES
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
@@ -83,6 +85,9 @@ const PaymentPage = () => {
             ...prev,
             proof: file,
         }));
+
+        //isi setFileName menjadi nama dari file yang di inputkan
+        setFileName(file ? file.name : null);
     }
 
     // HANDLE SUBMIT FORM PAYMENT
@@ -133,8 +138,9 @@ const PaymentPage = () => {
             }
             );
             if (response.status === 200 || response.status === 201) {
-                console.log("Transaction response data:", response.data.data);
+                // console.log("Transaction response data:", response.data.data);
                 const bookingTrxId = response.data.data.booking_trx_id;
+                const email = response.data.data.email;
 
                 if (!bookingTrxId) {
                     console.error("Error: booking_trx_id is undifined");
@@ -148,7 +154,7 @@ const PaymentPage = () => {
 
                 setLoading(false);
 
-                navigate(`/successBooking?${bookingTrxId}`);
+                navigate(`/successBooking?trx_id=${bookingTrxId}&email=${email}`);
             } else {
                 console.error("Unexpected response status:", response.status);
                 setLoading(false);
@@ -470,7 +476,9 @@ const PaymentPage = () => {
 
                                     {/* TEXT */}
                                     <p className="text-shujia-gray">
-                                        Upload Image
+                                        {fileName ? (
+                                            `${fileName}`
+                                        ) : ('Upload Image')}
                                     </p>
 
                                     {/* INPUT */}
