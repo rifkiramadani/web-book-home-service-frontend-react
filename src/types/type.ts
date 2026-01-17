@@ -56,7 +56,7 @@ export interface BookingTransaction {
     transaction_details: TransactionDetail[], //type relasi
 }
 
-interface TransactionDetail {
+export interface TransactionDetail {
     id: number,
     price: number,
     home_service_id: number,
