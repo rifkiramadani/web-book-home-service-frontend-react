@@ -43,7 +43,7 @@ export interface BookingTransaction {
     name: string,
     phone: string,
     email: string,
-    proof: string,
+    proof: string | null,
     address: string,
     city: string,
     post_code: string,
@@ -56,7 +56,7 @@ export interface BookingTransaction {
     transaction_details: TransactionDetail[], //type relasi
 }
 
-export interface TransactionDetail {
+interface TransactionDetail {
     id: number,
     price: number,
     home_service_id: number,

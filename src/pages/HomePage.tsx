@@ -265,7 +265,7 @@ const HomePage = () => {
                                     </a>
                                 </li>
                                 <li className="shrink-0">
-                                    <a href="#">
+                                    <Link to={'/myBooking'}>
                                         <div className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full border border-shujia-graylight transition-all duration-300 hover:border-shujia-orange">
                                             <img
                                                 src="assets/images/icons/note.svg"
@@ -273,7 +273,7 @@ const HomePage = () => {
                                                 className="h-[22px] w-[22px] shrink-0"
                                             />
                                         </div>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="shrink-0">
                                     <a href="#">
